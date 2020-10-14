@@ -17,36 +17,36 @@ def get_filters():
     """
     print('Hello! Let\'s explore some US bikeshare data!')
     # TO DO: get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
-   
+
     while True :
       city = input("\nWould you like to see data for chicago,new york city,or washington? \n").lower()
-      if city in ('new york city', 'chicago', 'washington'): 
+      if city in ('new york city', 'chicago', 'washington'):
         break
       else:
-        print("Oops,you entered invalid city.")
+        print("Oops,invalid city")
         continue
-    
+
     # TO DO: get user input for month (all, january, february, ... , june)
     while True :
       month = input("\nWould you like to see data for a particular month? if so,please enter january, february, march, april, may, june or type 'all' to apply no month filter? \n").lower()
       if month in ('january', 'february', 'march', 'april', 'may', 'june', 'all'):
         break
       else:
-        print("Oops,you entered invalid month.")
+        print("Oops,invalid month")
         continue
-      
+
     # TO DO: get user input for day of week (all, monday, tuesday, ... sunday)
     while True :
       day = input("\nWould you like to see data for a particular day? If so, please enter sunday, monday, tuesday, wednesday, thursday, friday, saturday or type 'all' to apply no day filter? \n").lower()
       if day in ('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'all'):
         break
       else:
-        print("Oops,you entered invalid day.")
+        print("Oops,invalid day")
         continue
 
     print('-'*40)
     return city, month, day
-    
+
 
 
 def load_data(city, month, day):
@@ -62,8 +62,8 @@ def load_data(city, month, day):
     """
     # load data file into a dataframe
     df = pd.read_csv(CITY_DATA[city])
-    
-    
+
+
 
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
@@ -71,7 +71,7 @@ def load_data(city, month, day):
     # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday_name
-    
+
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
@@ -85,8 +85,8 @@ def load_data(city, month, day):
     if day != 'all':
         # filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day.title()]
-        
-        
+
+
     return df
 
 
@@ -102,7 +102,7 @@ def time_stats(df):
     # TO DO: display the most common month
     most_common_month = df['month'].mode()[0]
     print('Most common month :', most_common_month)
-    
+
     # TO DO: display the most common day of week
     most_common_day = df['day_of_week'].mode()[0]
     print('Most common day of week :', most_common_day)
@@ -123,12 +123,12 @@ def station_stats(df):
     start_time = time.time()
 
     # TO DO: display most commonly used start station
-    
+
     most_common_start_station = df['Start Station'].value_counts().idxmax()
     print('Most commomly used start station:' , most_common_start_station)
 
     # TO DO: display most commonly used end station
-    
+
     most_common_end_station = df['End Station'].value_counts().idxmax()
     print('Most commomly used end station:' , most_common_end_station)
 
@@ -184,29 +184,29 @@ def user_stats(df):
       print('\nEarliest Year:', earliest_year)
     except KeyError:
       print("\nEarliest Year:\nNo data available for this month.")
-    
+
     # Display most recent year of birth
-    try:  
+    try:
       most_recent_year = df['Birth Year'].max()
       print('\nMost Recent Year:', most_recent_year)
     except KeyError:
       print("\nMost Recent Year:\nNo data available for this month.")
-    
+
     # Display most common year of birth
-    
+
     try:
       most_common_year = df['Birth Year'].value_counts().idxmax()
       print('\nMost Common Year:', most_common_year)
     except KeyError:
       print("\nMost Common Year:\nNo data available for this month.")
 
-    
+
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-    
-    
-    
+
+    # TO DO: get user input to see some raw data
+
     line_number = 1
     while True:
         raw = input('\nWould you like to see some raw data? Enter yes or no.\n')
@@ -214,15 +214,15 @@ def user_stats(df):
             print(df[line_number : line_number + 5])
             line_number = line_number + 5
         else:
-            break    
- 
+            break
+
 
 
 def main():
     while True:
         city, month, day = get_filters()
         df = load_data(city, month, day)
-        
+
 
         time_stats(df)
         station_stats(df)
